@@ -42,4 +42,8 @@ jobs:
           arch: aarch64
           distro: ubuntu20.04
           githubToken: ${{ github.token }}
+          shell: /bin/bash
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y curl
           run: curl -sL ${{ env.BASH_URL }}/ubuntu-arm64-build.sh | bash

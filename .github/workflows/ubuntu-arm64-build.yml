@@ -1,0 +1,45 @@
+#
+# Copyright (c) 2021-2022 Richard <https://sveil.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/sveil/Actions-SveilOS
+# Description: Build SveilOS Arm64 using GitHub Actions
+#
+name: Build SveilOS Arm64
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Ubuntu version"
+        required: false
+        default: "20.04.0"
+
+defaults:
+  run:
+    shell: bash
+    working-directory: scripts
+
+env:
+  BASH_URL: https://raw.githubusercontent.com/boy12371/sveilos-action/main
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: Build on ubuntu-20.04 aarch64
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: Build artifact
+        uses: uraimo/run-on-arch-action@v2.0.9
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+          githubToken: ${{ github.token }}
+          run: curl -sL $BASH_URL/ubuntu-arm64-build.sh | bash
